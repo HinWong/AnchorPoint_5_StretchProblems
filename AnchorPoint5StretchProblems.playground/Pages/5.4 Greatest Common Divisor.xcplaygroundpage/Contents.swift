@@ -12,7 +12,29 @@
  */
 import Foundation
 
+/**
+ 
+ percent sign: Remove number 2 from number 1 as many times as possible and give me the rest. (modulus)
 
+ 9 % 3  ---> returns 0
+ 10 % 3 --->  returns 1
+ 20 % 5 ---> returns 0
+ 
+ */
+
+func gcdRecursiveEuklid(_ m: Int, _ n: Int) -> Int {
+    
+    let x = m % n
+    
+    // if x does not equal to 0
+    if x != 0 {
+        return gcdRecursiveEuklid(n, x)
+    } else {
+        return n
+    }
+}
+
+gcdRecursiveEuklid(20, 200)
 
 
 

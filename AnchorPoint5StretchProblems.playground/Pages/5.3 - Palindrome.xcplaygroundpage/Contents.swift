@@ -18,9 +18,18 @@
  */
 import Foundation
 
+//Pass in a string to check if it is a palindrome
+let string1 = "daMMITt,....im mad"
 
+//Cleans up the string to return all lowercased strings (no spaces)
+let trimmedString = string1.lowercased().replacingOccurrences(of: "[^a-z]+", with: "", options: .regularExpression)
 
+func isPalindrome(value: String) -> Bool {
+    //Check if a string is the same string in reverse
+    return value == String(value.reversed())
+}
 
+isPalindrome(value: trimmedString)
 
 
 //: [Greatest Common Divisor](@next)

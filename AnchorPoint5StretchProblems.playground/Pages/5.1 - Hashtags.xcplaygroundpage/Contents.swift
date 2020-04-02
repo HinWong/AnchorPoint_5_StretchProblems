@@ -15,9 +15,61 @@
  */
 import Foundation
 
+protocol SearchableObject {
+    func matchesSearchTerm(_ searchTerm: String) -> Bool
+}
+
+struct Restaurant: SearchableObject {
+    let name: String
+    let description: String
+    let streetAddress: String
+    let city: String
+    let state: String
+    let reviews: [Review]
+    var hashtags: [String] {
+        var hashtagCollector = [String]()
+        reviews.forEach { hashtagCollector.append(contentsOf: $0.hashtags) }
+        return hashtagCollector
+    }
+    
+    func matchesSearchTerm(_ searchTerm: String) -> Bool {
+        if description.lowercased().contains(searchTerm.lowercased()) || hashtags.contains(searchTerm) {
+            return true
+        }
+        for review in reviews where review.matchesSearchTerm(searchTerm) {
+            return true
+        }
+        return false
+    }
+}
+
+struct Review: SearchableObject {
+    let username: String
+    let text: String
+    var hashtags: [String] {
+        return text
+            .split(separator: " ") // divide into `substrings`
+            .map { String($0) } // turn back into `strings`
+            .filter {  print($0, $0.hasPrefix("#")); return $0.hasPrefix("#") } // only keep #strings
+    }
+    
+    func matchesSearchTerm(_ searchTerm: String) -> Bool {
+        if hashtags.contains(searchTerm.lowercased()) || text.contains(searchTerm) {
+            return true
+        }
+        return false
+    }
+}
+
+let cubbyReviews = [Review(username: "R M Emerson Jr",
+                           text: "The tri-tip steak sandwich with #BBQ is a food thing to behold."),
+                    Review(username: "Jess N",
+                           text: "It was quite busy during lunch but the line moves pretty quick.")]
+let cubbys = Restaurant(name: "Cubby's",
+                        description: "Cheery counter serve with a stylish interior offers burgers, salads & Chicago-style beef sandwiches.",
+                        streetAddress: "700 North Thanksgiving Way d", city: "Lehi", state: "UT", reviews: cubbyReviews)
 
 
+print(cubbys.matchesSearchTerm("#BBQ"))
+print(cubbys.matchesSearchTerm("burgers"))
 
-
-
-//: [Longest Word](@next)

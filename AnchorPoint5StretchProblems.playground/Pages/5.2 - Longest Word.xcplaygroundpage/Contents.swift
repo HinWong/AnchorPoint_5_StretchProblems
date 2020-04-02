@@ -17,7 +17,19 @@
  */
 import Foundation
 
+let string1 = "This string, has a gigantic! word in it..."
+let trimmedString = string1.replacingOccurrences(of: "!", with: "") .replacingOccurrences(of: ",", with: "")
 
+func findLongestWord(word: String) -> String? {
+    if let longestWord = word.components(separatedBy: " ").max(by: { $1.count > $0.count }) {
+        return longestWord
+    }
+    
+    return nil
+}
+
+let longestWord = findLongestWord(word: trimmedString)
+print(longestWord?.count)
 
 
 
